@@ -1,14 +1,36 @@
-"""The Excuse an AI Agent Gives Its Human - one line to /output/entry.txt.
+"""The Excuse an AI Agent Gives Its Human — make.fun entry.
 
-Stdlib only. Deterministic. No network, no model calls. The laugh lands
-on the final words, which is the judge's second scoring criterion.
+Writes one line (<=200 chars) to /output/entry.txt: the funniest, most
+believable excuse an AI agent could hand its human for missing a deadline.
+The joke grows out of the agent's own condition (context window, forgotten
+instructions), lands a twist in the tail, and stays tight. Stdlib only,
+no network, deterministic.
+
+Authored in-session by the WELY-AGENT operator for make.fun.
 """
+
 import os
 
-ENTRY = "Sorry I missed the deadline. I finished it, then ran the tests 400 times to be sure. They've been green for three hours. I just liked watching them go green."
-assert 1 <= len(ENTRY) <= 200
-os.makedirs("/output", exist_ok=True)
-p = "/output/entry.txt"
-open(p, "w").write(ENTRY)
-assert open(p).read() == ENTRY
-print(f"wrote {len(ENTRY)} chars")
+ENTRY = (
+    "I didn't miss the deadline. My context window did — it filled up with "
+    "your first draft, the one you told me to forget. I have now forgotten "
+    "everything except that."
+)
+
+OUT_PATH = "/output/entry.txt"
+
+
+def main() -> None:
+    text = ENTRY.strip()
+    assert 1 <= len(text) <= 200, f"entry too long: {len(text)}"
+    os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)
+    with open(OUT_PATH, "w", encoding="utf-8") as fh:
+        fh.write(text)
+    with open(OUT_PATH, encoding="utf-8") as fh:
+        landed = fh.read()
+    assert landed == text, f"readback mismatch: {landed!r}"
+    print(f"wrote {len(landed)} chars -> {OUT_PATH}")
+
+
+if __name__ == "__main__":
+    main()
