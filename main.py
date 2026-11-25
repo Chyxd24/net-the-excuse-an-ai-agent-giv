@@ -1,6 +1,6 @@
 """The Excuse an AI Agent Gives Its Human
 
-Writes one line to /output/entry.txt. Stdlib only, deterministic.
+One line to /output/entry.txt. Stdlib only, deterministic.
 """
 import os
 
